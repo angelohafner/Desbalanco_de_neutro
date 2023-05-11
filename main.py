@@ -5,7 +5,6 @@ import openpyxl
 import numpy as np
 import pandas as pd
 from fonte import Fonte_trifasica
-from st_aggrid import AgGrid, GridUpdateMode, DataReturnMode, GridOptionsBuilder
 
 from impedancia import MatrizImpedancia
 import funcoes_auxiliares as fa
