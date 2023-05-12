@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
+import matplotlib.pyplot as plt
 
 class CapacitoresY:
     def __init__(self, m, n, d, horizontal_spacing, color='black', ax=None):
@@ -156,12 +156,14 @@ def generate_and_save_capacitor_plot(m=4, n=5, d=2.5, horizontal_spacing=6, file
     x2, y2 = capacitores2.draw(x_offset)
 
     draw_vertical_lines_and_connector(x1, y1, x2, y2)
-    save_plot(filename)
+    # save_plot(filename)
+
+    return fig
 
 
 # Exemplo de uso da função
-generate_and_save_capacitor_plot(m=5, n=2, d=2.5, horizontal_spacing=6, filename='capacitores.png')
 
+# fig = generate_and_save_capacitor_plot(m=5, n=2, d=2.5, horizontal_spacing=6, filename='capacitores.png')
 
 
 

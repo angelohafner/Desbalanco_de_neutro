@@ -1,3 +1,7 @@
+import matplotlib.patches as patches
+import numpy as np
+import matplotlib.pyplot as plt
+
 from engineering_notation import EngNumber
 import base64
 import streamlit as st
@@ -5,31 +9,11 @@ import openpyxl
 import numpy as np
 import pandas as pd
 from fonte import Fonte_trifasica
-
 from impedancia import MatrizImpedancia
 import funcoes_auxiliares as fa
 import funcoes_pricipais as fp
+from desenho_dos_capacitores_v2 import CapacitoresY
 
-def preenche_tab(indice, matriz, key):
-
-    cols = st.columns(m)
-    for ii in range(n):
-
-        for jj in range(m):
-            with cols[jj]:
-                matriz[indice, ii, jj] = st.number_input(label='C', min_value=0.01, max_value=1000., step=0.01, value=matriz[indice, ii, jj], key=str(key)+str(indice) + str(ii) + str(jj), label_visibility="collapsed")
-
-    return matriz
-
-def preenche_tabs(ramo, matriz_original, key):
-    st.markdown(f"### Ramo {ramo}")
-    tab1, tab2, tab3 = st.tabs(["Fase A", "Fase B", "Fase C"])
-    with tab1:
-        preenche_tab(0, matriz_original, key)
-    with tab2:
-        preenche_tab(1, matriz_original, key)
-    with tab3:
-        preenche_tab(2, matriz_original, key)
 
 
 
@@ -59,10 +43,11 @@ nr_fases, n, m = matriz_original_1.shape
 
 st.markdown("### Ramo 1")
 tab1, tab2, tab3 = st.tabs(["Fase A", "Fase B", "Fase C"])
-preenche_tabs(1, matriz_original_1, 1)
-preenche_tabs(2, matriz_original_2, 2)
+fa.preenche_tabs(1, matriz_original_1, 1, n, m)
+fa.preenche_tabs(2, matriz_original_2, 2, n, m)
 
-
+fig = CapacitoresY.generate_and_save_capacitor_plot(m=5, n=2, d=2.5, horizontal_spacing=6, filename='capacitores.png')
+st.pyplot(fig)
 
 
 
@@ -73,12 +58,10 @@ cols = st.columns(3)
 with cols[0]:
     st.markdown('#### Cap Equiv Ramo 1')
     fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(C1_eqivalente))
-with cols[1]:
+
+with cols[2]:
     st.markdown('#### Cap Equiv Ramo 2')
     fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(C2_eqivalente))
-with cols[2]:
-    st.markdown('#### Cap Equiv Paralela')
-    fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(C_equivalente))
 
 
 
@@ -93,22 +76,25 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.write('#### Ramo 1: $I_{012}$')
     st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012_1, 'polar')))
-with col2:
+
+with col3:
     st.write('#### Ramo 2: $I_{012}$')
     st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012_2, 'polar')))
-with col3:
-    st.write('#### Paralelo: $I_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012, 'polar')))
 
 
 
-col4, col5 = st.columns(2)
+
+
+col4, col5, col6 = st.columns(3)
 with col4:
+    st.write('#### Fonte: $\\varepsilon_{012}$')
+    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(V012_fonte, 'polar')))
+with col5:
     st.write('#### Paralelo: $V_{012}$')
     st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(V012o, 'polar')))
-with col5:
-    st.write('#### Fonte: $V_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(V012_fonte, 'polar')))
+with col6:
+    st.write('#### Paralelo: $I_{012}$')
+    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012, 'polar')))
 
 st.write("the end")
 
