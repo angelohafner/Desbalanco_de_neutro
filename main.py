@@ -2,7 +2,7 @@ import matplotlib.patches as patches
 import numpy as np
 import matplotlib.pyplot as plt
 
-from engineering_notation import EngNumber
+from engineerign_notation_modificada import EngNumber
 import base64
 import streamlit as st
 import openpyxl
@@ -41,8 +41,7 @@ matriz_original_1 = 1e6*matriz_original_1
 matriz_original_2 = 1e6*matriz_original_2
 nr_fases, n, m = matriz_original_1.shape
 
-st.markdown("### Ramo 1")
-tab1, tab2, tab3 = st.tabs(["Fase A", "Fase B", "Fase C"])
+
 fa.preenche_tabs(1, matriz_original_1, 1, n, m)
 fa.preenche_tabs(2, matriz_original_2, 2, n, m)
 
@@ -54,14 +53,6 @@ st.pyplot(fig)
 
 
 
-cols = st.columns(3)
-with cols[0]:
-    st.markdown('#### Cap Equiv Ramo 1')
-    fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(C1_eqivalente))
-
-with cols[2]:
-    st.markdown('#### Cap Equiv Ramo 2')
-    fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(C2_eqivalente))
 
 
 
@@ -72,31 +63,15 @@ I_malha, Iabc1, Iabc2, Iabc, Vabco = fp.correntes(Zabc, Z_malha, Yabc1, Yabc2, V
 
 I012_1, I012_2, I012, V012o, V012_fonte = fp.componentes_simetricas(Iabc1, Iabc2, Iabc, Vabco, Vabc_fonte)
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.write('#### Ramo 1: $I_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012_1, 'polar')))
-
-with col3:
-    st.write('#### Ramo 2: $I_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012_2, 'polar')))
 
 
 
 
+cols = st.columns(2)
+fp.display_data(cols[0], '1', C1_eqivalente, I012_1, Iabc1, V012o, Vabco)
+fp.display_data(cols[1], '2', C2_eqivalente, I012_2, Iabc2, V012o, Vabco)
 
-col4, col5, col6 = st.columns(3)
-with col4:
-    st.write('#### Fonte: $\\varepsilon_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(V012_fonte, 'polar')))
-with col5:
-    st.write('#### Paralelo: $V_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(V012o, 'polar')))
-with col6:
-    st.write('#### Paralelo: $I_{012}$')
-    st.write(fa.converter_matriz_em_data_frame(fa.eng_complex_matrix(I012, 'polar')))
 
-st.write("the end")
 
 
 

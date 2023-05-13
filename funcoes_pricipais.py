@@ -57,3 +57,43 @@ def componentes_simetricas(Iabc1, Iabc2, Iabc, Vabco, Vabc_fonte):
     V012o = fa.transformada_Fortescue(Vabco)
     V012_fonte = fa.transformada_Fortescue(Vabc_fonte)
     return [I012_1, I012_2, I012, V012o, V012_fonte]
+
+
+
+
+
+
+def avoid_tiny_numbers(arr):
+    arr[np.abs(arr < 1e-15)] = 0
+    return arr
+
+def display_data(col, branch, C_eqivalente, I012, Iabc, V012o, Vabco):
+    with col:
+        st.markdown(f'### Ramo {branch}')
+        st.write('Capacitâncias')
+        st.write(f'$\; \; \; C_{{a}} = $ {EngNumber(C_eqivalente[0, 0])}F')
+        st.write(f'$\; \; \; C_{{b}} = $ {EngNumber(C_eqivalente[1, 1])}F')
+        st.write(f'$\; \; \; C_{{c}} = $ {EngNumber(C_eqivalente[2, 2])}F')
+
+        st.markdown('Correntes de Sequência')
+        I012 = avoid_tiny_numbers(I012)
+        st.write(f'$\; \; \; I_{{0}} = $ {fa.eng_complex_polar(I012[0, 0])}A')
+        st.write(f'$\; \; \; I_{{1}} = $ {fa.eng_complex_polar(I012[1, 0])}A')
+        st.write(f'$\; \; \; I_{{2}} = $ {fa.eng_complex_polar(I012[2, 0])}A')
+
+        st.markdown('Correntes de fase')
+        Iabc = avoid_tiny_numbers(Iabc)
+        st.write(f'$\; \; \; I_{{0}} = $ {fa.eng_complex_polar(Iabc[0, 0])}A')
+        st.write(f'$\; \; \; I_{{1}} = $ {fa.eng_complex_polar(Iabc[1, 0])}A')
+        st.write(f'$\; \; \; I_{{2}} = $ {fa.eng_complex_polar(Iabc[2, 0])}A')
+
+        st.markdown('Tensões de Sequência')
+        V012o = avoid_tiny_numbers(V012o)
+        st.write(f'$\; \; \; V_{{0}} = $ {fa.eng_complex_polar(V012o[0, 0])}V')
+        st.write(f'$\; \; \; V_{{1}} = $ {fa.eng_complex_polar(V012o[1, 0])}V')
+        st.write(f'$\; \; \; V_{{2}} = $ {fa.eng_complex_polar(V012o[2, 0])}V')
+
+        st.markdown('Tensões de fase')
+        st.write(f'$\; \; \; V_{{ao}} = $ {fa.eng_complex_polar(Vabco[0, 0])}V')
+        st.write(f'$\; \; \; V_{{bo}} = $ {fa.eng_complex_polar(Vabco[1, 0])}V')
+        st.write(f'$\; \; \; V_{{co}} = $ {fa.eng_complex_polar(Vabco[2, 0])}V')
