@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class CapacitoresY:
-    def __init__(self, m, n, d, horizontal_spacing, color='black', ax=None):
+    def __init__(self, m, n, d, horizontal_spacing, color='blue', ax=None):
         self.m = m
         self.n = n
         self.d = d
@@ -106,7 +106,7 @@ class CapacitoresY:
         plt.show()
 
     @staticmethod
-    def draw_current_transformer(x, y, radius=0.5, color='black'):
+    def draw_current_transformer(x, y, radius=0.5, color='blue'):
         circle = plt.Circle((x, y), radius, edgecolor=color, facecolor='none', linewidth=1)
         plt.gca().add_artist(circle)
 
@@ -117,7 +117,7 @@ class CapacitoresY:
         plt.plot(x - spiral_x, y - spiral_y, color=color, linewidth=1)
 
     @staticmethod
-    def draw_vertical_lines_and_connector(x1, y1, x2, y2, color='black'):
+    def draw_vertical_lines_and_connector(x1, y1, x2, y2, color='blue'):
         plt.plot([x1, x1], [y1, y1 - 2], color=color, linewidth=1)
         plt.plot([x2, x2], [y2, y2 - 2], color=color, linewidth=1)
         plt.plot([x1, x2], [y1 - 2, y2 - 2], color=color, linewidth=1)
@@ -135,6 +135,7 @@ class CapacitoresY:
     def generate_and_save_capacitor_plot(m=4, n=5, d=2.5, horizontal_spacing=6, filename='capacitores.png'):
         fig, ax = plt.subplots()
         ax.axis('off')
+        fig.patch.set_facecolor('none')
 
         capacitores1 = CapacitoresY(m=m, n=n, d=d, horizontal_spacing=horizontal_spacing, color='red', ax=ax)
         x1, y1 = capacitores1.draw()

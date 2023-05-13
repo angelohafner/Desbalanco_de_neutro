@@ -147,6 +147,7 @@ def save_plot(filename):
 
 def generate_and_save_capacitor_plot(m=4, n=5, d=2.5, horizontal_spacing=6, filename='capacitores.png'):
     fig, ax = plt.subplots()
+    fig.patch.set_facecolor('none')
 
     capacitores1 = CapacitoresY(m=m, n=n, d=d, horizontal_spacing=horizontal_spacing, color='red', ax=ax)
     x1, y1 = capacitores1.draw()

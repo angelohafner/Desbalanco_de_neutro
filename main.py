@@ -46,7 +46,7 @@ tab1, tab2, tab3 = st.tabs(["Fase A", "Fase B", "Fase C"])
 fa.preenche_tabs(1, matriz_original_1, 1, n, m)
 fa.preenche_tabs(2, matriz_original_2, 2, n, m)
 
-fig = CapacitoresY.generate_and_save_capacitor_plot(m=5, n=2, d=2.5, horizontal_spacing=6, filename='capacitores.png')
+fig = CapacitoresY.generate_and_save_capacitor_plot(m=num_serie, n=num_paralelo, d=2.5, horizontal_spacing=6, filename='capacitores.png')
 st.pyplot(fig)
 
 
