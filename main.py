@@ -29,7 +29,7 @@ with col1:
     num_serie = st.slider("Número de capacitâncias em série:", min_value=1, max_value=6, step=1, value=4)
 
 with col3:
-    tol = st.slider("Tolerância valor:", min_value=0, max_value=100, step=1, value=0)
+    tol = st.slider("Tolerância valor:", min_value=0, max_value=100, step=1, value=100)
     tol = tol / 100
     valor_capacitancia = st.slider("Digite o valor da capacitância em uF:", min_value=0.01, max_value=1000., step=0.01, value=10.)
     valor_capacitancia = valor_capacitancia * 1e-6
@@ -67,9 +67,24 @@ I012_1, I012_2, I012, V012o, V012_fonte = fp.componentes_simetricas(Iabc1, Iabc2
 
 
 
-cols = st.columns(2)
+cols = st.columns(3)
+
 fp.display_data(cols[0], '1', C1_eqivalente, I012_1, Iabc1, V012o, Vabco)
 fp.display_data(cols[1], '2', C2_eqivalente, I012_2, Iabc2, V012o, Vabco)
+fp.display_data(cols[2], 'Equivalente', C_equivalente, I012, Iabc, V012o, Vabco)
+
+
+fasorial, Von = fp.plot_diagrama_fasorial(Vabco, v_ab)
+
+fig_Iabc1, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc1, np.max(np.abs(Iabc1)))
+fig_Iabc2, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc2, np.max(np.abs(Iabc2)))
+fig_Iabc, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc, np.max(np.abs(Iabc)))
+
+
+st.pyplot(fig=fasorial)
+st.pyplot(fig=fig_Iabc1)
+st.pyplot(fig=fig_Iabc2)
+st.pyplot(fig=fig_Iabc)
 
 
 

@@ -31,11 +31,11 @@ import cmath
 
 def eng_complex_polar(complex_number):
     r, theta = cmath.polar(complex_number)
-    if np.round(r, 10) == 0:
+    if np.round(r, 15) == 0:
         r = 0
         theta = 0
     else:
-        r = EngNumber(np.round(r, 10))
+        r = EngNumber(np.round(r, 15))
         theta = int(np.round(np.degrees(theta), 0))
     return '{} ∠ {}°'.format(r, theta)
 
