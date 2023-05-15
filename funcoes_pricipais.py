@@ -144,25 +144,25 @@ def plot_diagrama_fasorial(Vabco, v_ab):
     fasorial, ax = plt.subplots()
     x0 = -Vanx
     y0 = -Vany
-    ww = 0.005
-    ax.quiver(x0, y0, Vaox, Vaoy, color='r', angles='xy', scale_units='xy', scale=1,  width=ww, label="$V_{ao}=$"+str(fa.eng_complex_polar(Vao)))
-    ax.plot([x0, x0 + Vanx], [y0, y0 + Vany], color='r',  ls='--')
-    ax.quiver(x0, y0, Vabx, Vaby, color='r', angles='xy', scale_units='xy', scale=1,  width=ww, label="$V_{ab}=$"+str(fa.eng_complex_polar(v_ab)))
+    ww = 0.002
+    ax.quiver(x0, y0, Vaox, Vaoy, color='r', angles='xy', scale_units='xy', scale=1,  width=2*ww, label="$V_{ao}=$"+str(fa.eng_complex_polar(Vao)))
+    ax.plot([x0, x0 + Vanx], [y0, y0 + Vany], color='r',  ls='--', alpha=0.5)
+    ax.quiver(x0, y0, Vabx, Vaby, color='r', angles='xy', scale_units='xy', scale=1,  width=2*ww, label="$V_{ab}=$"+str(fa.eng_complex_polar(v_ab)))
     x0 = -Vbnx
     y0 = -Vbny
-    ax.quiver(x0, y0, Vbox, Vboy, color='g', angles='xy', scale_units='xy', scale=1,  width=ww, label="$V_{bo}=$"+str(fa.eng_complex_polar(Vbo)))
-    ax.plot([x0, x0 + Vbnx], [y0, y0 + Vbny], color='g',  ls='--')
-    ax.quiver(x0, y0, Vbcx, Vbcy, color='g', angles='xy', scale_units='xy', scale=1, width=ww, label="$V_{bc}=$"+str(fa.eng_complex_polar(v_bc)))
+    ax.quiver(x0, y0, Vbox, Vboy, color='g', angles='xy', scale_units='xy', scale=1,  width=2*ww, label="$V_{bo}=$"+str(fa.eng_complex_polar(Vbo)))
+    ax.plot([x0, x0 + Vbnx], [y0, y0 + Vbny], color='g',  ls='--', alpha=0.5)
+    ax.quiver(x0, y0, Vbcx, Vbcy, color='g', angles='xy', scale_units='xy', scale=1, width=2*ww, label="$V_{bc}=$"+str(fa.eng_complex_polar(v_bc)))
     x0 = -Vcnx
     y0 = -Vcny
-    ax.quiver(x0, y0, Vcox, Vcoy, color='b', angles='xy', scale_units='xy', scale=1,  width=ww, label="$V_{co}=$"+str(fa.eng_complex_polar(Vco)))
-    ax.plot([x0, x0 + Vcnx], [y0, y0 + Vcny], color='b',  ls='--')
-    ax.quiver(x0, y0, Vcax, Vcay, color='g', angles='xy', scale_units='xy', scale=1, width=ww, label="$V_{ca}=$"+str(fa.eng_complex_polar(v_ca)))
+    ax.quiver(x0, y0, Vcox, Vcoy, color='b', angles='xy', scale_units='xy', scale=1,  width=2*ww, label="$V_{co}=$"+str(fa.eng_complex_polar(Vco)))
+    ax.plot([x0, x0 + Vcnx], [y0, y0 + Vcny], color='b',  ls='--', alpha=0.5)
+    ax.quiver(x0, y0, Vcax, Vcay, color='g', angles='xy', scale_units='xy', scale=1, width=2*ww, label="$V_{ca}=$"+str(fa.eng_complex_polar(v_ca)))
     x0 = -Vonx
     y0 = -Vony
-    ax.quiver(x0, y0, Vonx, Vony, color='k', angles='xy', scale_units='xy', scale=1, width=ww)
+    ax.quiver(x0, y0, Vonx, Vony, color='k', angles='xy', scale_units='xy', scale=1, width=2*ww)
 
-    plt.legend()
+    plt.legend(loc='best')
     formatter_y = ticker.EngFormatter(unit='V')
     ax.yaxis.set_major_formatter(formatter_y)
 
@@ -176,7 +176,9 @@ def plot_diagrama_fasorial(Vabco, v_ab):
     return [fasorial, Von]
 
 # ===================================================================
-def plot_diagrama_fasorial_correntes(Iabc, lim):
+def plot_diagrama_fasorial_correntes(Iabc, lim, ramo='só deus sabe'):
+    ww = 0.002
+    ramo = ramo
     mpl.rcParams['font.size'] = 6
     ia = Iabc[0]
     ib = Iabc[1]
@@ -192,11 +194,11 @@ def plot_diagrama_fasorial_correntes(Iabc, lim):
 
     x0 = 0
     y0 = 0
-    ax.quiver(x0, y0, Iaox, Iaoy, color='r', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_a}=$"+str(fa.eng_complex_polar(ia)))
-    ax.quiver(x0, y0, Ibox, Iboy, color='g', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_b}=$"+str(fa.eng_complex_polar(ib)))
-    ax.quiver(x0, y0, Icox, Icoy, color='b', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_c}=$"+str(fa.eng_complex_polar(ic)))
-    ax.quiver(x0, y0, Ionx, Iony, color='k', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_n}=$"+str(fa.eng_complex_polar(io)))
-    plt.legend()
+    ax.quiver(x0, y0, Iaox, Iaoy, color='r', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_a}=$"+str(fa.eng_complex_polar(ia)), width=2*ww)
+    ax.quiver(x0, y0, Ibox, Iboy, color='g', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_b}=$"+str(fa.eng_complex_polar(ib)), width=2*ww)
+    ax.quiver(x0, y0, Icox, Icoy, color='b', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_c}=$"+str(fa.eng_complex_polar(ic)), width=2*ww)
+    ax.quiver(x0, y0, Ionx, Iony, color='k', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_n}=$"+str(fa.eng_complex_polar(io)), width=2*ww)
+    plt.legend(loc='best')
 
     ax.set_xlim(-lim, lim)
     ax.set_ylim(-lim, lim)
@@ -209,7 +211,7 @@ def plot_diagrama_fasorial_correntes(Iabc, lim):
     ax.set_xlabel('Real')
     ax.set_ylabel('Imaginário')
     ax.grid(ls= ":")
-    ax.set_title('Diagrama Fasorial das Correntes de Fase')
+    ax.set_title(f'Diagrama Fasorial das Correntes de Fase Ramo {ramo}')
 
     return [fig, ax, io]
 

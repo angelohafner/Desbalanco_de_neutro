@@ -76,9 +76,10 @@ fp.display_data(cols[2], 'Equivalente', C_equivalente, I012, Iabc, V012o, Vabco)
 
 fasorial, Von = fp.plot_diagrama_fasorial(Vabco, v_ab)
 
-fig_Iabc1, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc1, np.max(np.abs(Iabc1)))
-fig_Iabc2, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc2, np.max(np.abs(Iabc2)))
-fig_Iabc, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc, np.max(np.abs(Iabc)))
+lim = 1.1 * np.max(np.abs(Iabc))
+fig_Iabc1, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc1, lim, '1')
+fig_Iabc2, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc2, lim, '2')
+fig_Iabc, ax, io = fp.plot_diagrama_fasorial_correntes(Iabc, lim, 'Equivalente')
 
 
 st.pyplot(fig=fasorial)
