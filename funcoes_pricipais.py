@@ -176,7 +176,7 @@ def plot_diagrama_fasorial(Vabco, v_ab):
     return [fasorial, Von]
 
 # ===================================================================
-def plot_diagrama_fasorial_correntes(Iabc, lim, ramo='só deus sabe'):
+def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     ww = 0.002
     ramo = ramo
     mpl.rcParams['font.size'] = 6
