@@ -1,6 +1,4 @@
 import numpy as np
-import funcoes_auxiliares as fa
-import streamlit as st
 class Fonte_trifasica:
     def __init__(self, v_ab, config):
         self.v_ab = a = v_ab

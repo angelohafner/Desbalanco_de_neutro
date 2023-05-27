@@ -55,9 +55,7 @@ def eng_complex_matrix(matrix, format='rectangular'):
 
 
 
-def matriz_capacitancias_das_tres_fases(valor_capacitancia = 2, tol = 0.01, num_paralelo=3, num_serie=2):
-    aleatorios = np.random.uniform(1-tol, 1+tol, size=(3, num_serie, num_paralelo))
-    matriz_original = valor_capacitancia * aleatorios
+def matriz_capacitancias_das_tres_fases(matriz_original):
     paralelos = np.sum(matriz_original, axis=1)
     series = 1/np.sum(np.reciprocal(paralelos), axis=1)
     matriz = np.diag(series)
@@ -97,21 +95,28 @@ def get_table_download_link(df):
     b64 = base64.b64encode(val)  # val looks like b'...'
     return f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="extract.xlsx">Download csv file</a>' # decode b'abc' => abc
 
-def preenche_tab(indice, matriz, key, n, m):
+def preenche_tab(ramo, ff, matriz):
+    f, n, m = matriz.shape
     cols = st.columns(m)
     for ii in range(n):
         for jj in range(m):
             with cols[jj]:
-                matriz[indice, ii, jj] = st.number_input(label='C', min_value=0.01, max_value=1000., step=0.01, value=matriz[indice, ii, jj], key=str(key)+str(indice) + str(ii) + str(jj), label_visibility="collapsed")
+                matriz[ff, ii, jj] = st.number_input(label='C', min_value=0.01, max_value=1000., step=0.01, value=matriz[ff, ii, jj], key=str(ramo)+str(ff) + str(ii) + str(jj), label_visibility="collapsed")
 
     return matriz
 
-def preenche_tabs(ramo, matriz_original, key, n, m):
+def preenche_tabs(ramo, matriz_original_uF):
+
     st.markdown(f"### Ramo {ramo}")
     tab1, tab2, tab3 = st.tabs(["Fase A", "Fase B", "Fase C"])
     with tab1:
-        preenche_tab(0, matriz_original, key, n, m)
+        fase = 0
+        matriz_original_uF = preenche_tab(ramo, fase, matriz_original_uF)
     with tab2:
-        preenche_tab(1, matriz_original, key, n, m)
+        fase = fase + 1
+        matriz_original_uF = preenche_tab(ramo, fase, matriz_original_uF)
     with tab3:
-        preenche_tab(2, matriz_original, key, n, m)
+        fase = fase + 1
+        matriz_original_uF = preenche_tab(ramo, fase, matriz_original_uF)
+
+    return matriz_original_uF

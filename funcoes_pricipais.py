@@ -14,9 +14,9 @@ import matplotlib.pyplot as mpl
 
 
 
-def matriz_impedancia_da_malha(num_paralelo, num_serie, tol, valor_capacitancia):
-    matriz_original_1, matriz_1, paralelos_1, series_1 = fa.matriz_capacitancias_das_tres_fases(valor_capacitancia = valor_capacitancia, tol = tol, num_paralelo=num_paralelo, num_serie=num_serie)
-    matriz_original_2, matriz_2, paralelos_2, series_2 = fa.matriz_capacitancias_das_tres_fases(valor_capacitancia = valor_capacitancia, tol = tol, num_paralelo=num_paralelo, num_serie=num_serie)
+def matriz_impedancia_da_malha(matriz_original_1, matriz_original_2):
+    matriz_original_1, matriz_1, paralelos_1, series_1 = fa.matriz_capacitancias_das_tres_fases(matriz_original_1)
+    matriz_original_2, matriz_2, paralelos_2, series_2 = fa.matriz_capacitancias_das_tres_fases(matriz_original_2)
     C1_eqivalente = matriz_1
     C2_eqivalente = matriz_2
     C_equivalente = C1_eqivalente + C1_eqivalente
@@ -33,7 +33,7 @@ def matriz_impedancia_da_malha(num_paralelo, num_serie, tol, valor_capacitancia)
     configuracao = "y_isolado"
     matriz_impedancia = MatrizImpedancia(Zabc, configuracao)
     Z_malha = matriz_impedancia.matriz()
-    return [Z_malha, Yabc1, Yabc2, Yabc, Zabc1, Zabc2, Zabc, C1_eqivalente, C2_eqivalente, C_equivalente, matriz_1, matriz_2, matriz_original_1, matriz_original_2]
+    return [Z_malha, Yabc1, Yabc2, Yabc, Zabc1, Zabc2, Zabc, C1_eqivalente, C2_eqivalente, C_equivalente, matriz_1, matriz_2]
 
 
 
@@ -88,9 +88,9 @@ def display_data(col, branch, C_eqivalente, I012, Iabc, V012o, Vabco):
 
         st.markdown('<u>Correntes de fase</u>', unsafe_allow_html=True)
         # Iabc = avoid_tiny_numbers(Iabc)
-        st.write(f'$\; \; \; I_{{0}} = $ {fa.eng_complex_polar(Iabc[0, 0])}A')
-        st.write(f'$\; \; \; I_{{1}} = $ {fa.eng_complex_polar(Iabc[1, 0])}A')
-        st.write(f'$\; \; \; I_{{2}} = $ {fa.eng_complex_polar(Iabc[2, 0])}A')
+        st.write(f'$\; \; \; I_{{a}} = $ {fa.eng_complex_polar(Iabc[0, 0])}A')
+        st.write(f'$\; \; \; I_{{b}} = $ {fa.eng_complex_polar(Iabc[1, 0])}A')
+        st.write(f'$\; \; \; I_{{c}} = $ {fa.eng_complex_polar(Iabc[2, 0])}A')
 
         st.markdown('<u>Tensões de Sequência</u>', unsafe_allow_html=True)
         # V012o = avoid_tiny_numbers(V012o)
@@ -183,7 +183,7 @@ def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     ia = Iabc[0]
     ib = Iabc[1]
     ic = Iabc[2]
-    io = Iabc.sum()
+    io = ia + ib + ic
 
     Iaox, Iaoy = np.real(ia), np.imag(ia)
     Ibox, Iboy = np.real(ib), np.imag(ib)
@@ -197,7 +197,18 @@ def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     ax.quiver(x0, y0, Iaox, Iaoy, color='r', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_a}=$"+str(fa.eng_complex_polar(ia)), width=2*ww)
     ax.quiver(x0, y0, Ibox, Iboy, color='g', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_b}=$"+str(fa.eng_complex_polar(ib)), width=2*ww)
     ax.quiver(x0, y0, Icox, Icoy, color='b', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_c}=$"+str(fa.eng_complex_polar(ic)), width=2*ww)
-    ax.quiver(x0, y0, Ionx, Iony, color='k', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_n}=$"+str(fa.eng_complex_polar(io)), width=2*ww)
+    if abs(io) < 1e-6:
+        io = 0.
+
+    ax.quiver(x0, y0, Ionx, Iony, color='k', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_n}=$"+str(fa.eng_complex_polar(io)), width=1*ww)
+
+    raio = np.arange(10*int(lim/100), 10*int(lim/10), 20*int(lim/100))
+    for ii in range(len(raio)):
+        circle = plt.Circle((0,0), raio[ii], color='black', fill=False, lw=0.5, ls=":", alpha=0.5)
+        ax.add_artist(circle)
+
+
+
     plt.legend(loc='best')
 
     ax.set_xlim(-lim, lim)
@@ -210,6 +221,9 @@ def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     ax.xaxis.set_major_formatter(formatter_x)
     ax.set_xlabel('Real')
     ax.set_ylabel('Imaginário')
+
+
+
     ax.grid(ls= ":")
     ax.set_title(f'Diagrama Fasorial das Correntes de Fase Ramo {ramo}')
 
