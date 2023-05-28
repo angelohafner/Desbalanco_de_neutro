@@ -162,12 +162,22 @@ def plot_diagrama_fasorial(Vabco, v_ab):
     y0 = -Vony
     ax.quiver(x0, y0, Vonx, Vony, color='k', angles='xy', scale_units='xy', scale=1, width=2*ww)
 
+    rho = np.linspace(0, 1.2*lim, 100)
+    phi = np.linspace(0, 2*np.pi, 100)
+    RHO, PHI = np.meshgrid(rho, phi)
+    XXX = RHO * np.cos(PHI)
+    YYY = RHO * np.sin(PHI)
+    ZZZ = RHO
+    CS = ax.contour(XXX, YYY, ZZZ, colors='gray', linewidths=0.5, linestyles='dotted', alpha=0.5)
+    ax.clabel(CS, inline=1, fontsize=6)
+
     plt.legend(loc='best')
     formatter_y = ticker.EngFormatter(unit='V')
     ax.yaxis.set_major_formatter(formatter_y)
 
     formatter_x = ticker.EngFormatter(unit='V')
     ax.xaxis.set_major_formatter(formatter_x)
+    ax.set_aspect('equal')
     ax.set_xlabel('Real')
     ax.set_ylabel('Imaginário')
     ax.grid(ls= ":")
@@ -202,10 +212,14 @@ def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
 
     ax.quiver(x0, y0, Ionx, Iony, color='k', angles='xy', scale_units='xy', scale=1, linewidths=0.5, label="${I_n}=$"+str(fa.eng_complex_polar(io)), width=1*ww)
 
-    raio = np.arange(10*int(lim/100), 10*int(lim/10), 20*int(lim/100))
-    for ii in range(len(raio)):
-        circle = plt.Circle((0,0), raio[ii], color='black', fill=False, lw=0.5, ls=":", alpha=0.5)
-        ax.add_artist(circle)
+    rho = np.linspace(0, 1.2*lim, 100)
+    phi = np.linspace(0, 2*np.pi, 100)
+    RHO, PHI = np.meshgrid(rho, phi)
+    XXX = RHO * np.cos(PHI)
+    YYY = RHO * np.sin(PHI)
+    ZZZ = RHO
+    CS = ax.contour(XXX, YYY, ZZZ, colors='gray', linewidths=0.5, linestyles='dotted', alpha=0.5)
+    ax.clabel(CS, inline=1, fontsize=6)
 
 
 
@@ -222,9 +236,7 @@ def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     ax.set_xlabel('Real')
     ax.set_ylabel('Imaginário')
 
-
-
-    ax.grid(ls= ":")
+    # ax.grid(ls= ":")
     ax.set_title(f'Diagrama Fasorial das Correntes de Fase Ramo {ramo}')
 
     return [fig, ax, io]
