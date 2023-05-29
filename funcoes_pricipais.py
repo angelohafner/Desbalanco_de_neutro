@@ -103,7 +103,9 @@ def display_data(col, branch, C_eqivalente, I012, Iabc, V012o, Vabco):
         st.write(f'$\; \; \; V_{{bo}} = $ {fa.eng_complex_polar(Vabco[1, 0])}V')
         st.write(f'$\; \; \; V_{{co}} = $ {fa.eng_complex_polar(Vabco[2, 0])}V')
 
-
+def eng_format(value):
+    eng_number = EngNumber(value)
+    return str(eng_number)
 # ===================================================================
 def plot_diagrama_fasorial(Vabco, v_ab):
     mpl.rcParams['font.size'] = 8
@@ -162,16 +164,16 @@ def plot_diagrama_fasorial(Vabco, v_ab):
     y0 = -Vony
     ax.quiver(x0, y0, Vonx, Vony, color='k', angles='xy', scale_units='xy', scale=1, width=2*ww)
 
-    rho = np.linspace(0, 1.2*lim, 100)
+    rho = np.linspace(0, 1.5*lim, 100)
     phi = np.linspace(0, 2*np.pi, 100)
     RHO, PHI = np.meshgrid(rho, phi)
     XXX = RHO * np.cos(PHI)
     YYY = RHO * np.sin(PHI)
     ZZZ = RHO
     CS = ax.contour(XXX, YYY, ZZZ, colors='gray', linewidths=0.5, linestyles='dotted', alpha=0.5)
-    ax.clabel(CS, inline=1, fontsize=6)
+    ax.clabel(CS, inline=1, fontsize=6, fmt=eng_format)
 
-    plt.legend(loc='best')
+    plt.legend(loc='best', fontsize=6)
     formatter_y = ticker.EngFormatter(unit='V')
     ax.yaxis.set_major_formatter(formatter_y)
 
@@ -180,12 +182,12 @@ def plot_diagrama_fasorial(Vabco, v_ab):
     ax.set_aspect('equal')
     ax.set_xlabel('Real')
     ax.set_ylabel('Imaginário')
-    ax.grid(ls= ":")
     ax.set_title('Diagrama Fasorial das Tensões de Fase')
 
     return [fasorial, Von]
 
 # ===================================================================
+
 def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     ww = 0.002
     ramo = ramo
@@ -219,7 +221,7 @@ def plot_diagrama_fasorial_correntes(Iabc, lim, ramo):
     YYY = RHO * np.sin(PHI)
     ZZZ = RHO
     CS = ax.contour(XXX, YYY, ZZZ, colors='gray', linewidths=0.5, linestyles='dotted', alpha=0.5)
-    ax.clabel(CS, inline=1, fontsize=6)
+    ax.clabel(CS, inline=1, fontsize=6, fmt=eng_format)
 
 
 
