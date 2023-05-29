@@ -101,7 +101,7 @@ def preenche_tab(ramo, ff, matriz):
     for ii in range(n):
         for jj in range(m):
             with cols[jj]:
-                matriz[ff, ii, jj] = st.number_input(label='C', min_value=0.01, max_value=1000., step=0.01, value=matriz[ff, ii, jj], key=str(ramo)+str(ff) + str(ii) + str(jj), label_visibility="collapsed")
+                matriz[ff, ii, jj] = st.number_input(label='C', min_value=0.01, max_value=2000., step=0.01, value=matriz[ff, ii, jj], key=str(ramo)+str(ff) + str(ii) + str(jj), label_visibility="collapsed")
 
     return matriz
 
